@@ -27,11 +27,13 @@ module Rswag
 
       def swagger_endpoint(url, name)
         @config_object[:urls] ||= []
+        @config_object[:urls_sample] ||= []
         @config_object[:urls] << { url: url, name: name }
+        @config_object[:urls_sample] << { url: url, name: name }
       end
 
-      def basic_auth_credentials(username, password)
-        @config_object[:basic_auth] = { username: username, password: password }
+      def basic_auth_credentials(names_and_passwords)
+        @config_object[:basic_auth] = names_and_passwords
       end
 
       # rubocop:disable Naming/AccessorMethodName

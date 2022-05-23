@@ -12,7 +12,13 @@ module Rswag
         if Rswag::Ui.config.basic_auth_enabled
           c = Rswag::Ui.config
           app.middleware.use Rswag::Ui::BasicAuth do |username, password|
-            c.config_object[:basic_auth].values == [username, password]
+            c.config_object[:urls] = c.config_object[:urls_sample]
+            auth = { username: username, password: password }
+            users = c.config_object[:basic_auth].select { |basic_auth| basic_auth == auth }
+            urls = c.config_object[:urls].select{ |url| url[:url].include?(username) }
+            c.config_object[:urls] = urls if urls.any?
+
+            users.any?
           end
         end
       end
